@@ -40,8 +40,9 @@ class MyApp extends StatelessWidget {
 class User {
   final String martricule;
   final String password;
+  final String pos;
 
-  User({required this.martricule, required this.password});
+  User({required this.martricule, required this.password, required this.pos});
 }
 
 
@@ -61,16 +62,16 @@ class _MyHomePageState extends State<MyHomePage> {
   late String _password;
   final _formKey = GlobalKey<FormState>();
   final List<User> users = [
-    User(martricule: "10234567", password: "admin"),
-    User(martricule: "10345678", password: "admin"),
-    User(martricule: "10123456", password: "admin"),
-    User(martricule: "10298765", password: "admin"),
-    User(martricule: "10387654", password: "admin"),
-    User(martricule: "10176543", password: "admin"),
-    User(martricule: "10212345", password: "admin"),
-    User(martricule: "10323456", password: "admin"),
-    User(martricule: "10134567", password: "admin"),
-    User(martricule: "10245678", password: "admin")
+    User(martricule: "10234567", password: "admin", pos: "operateur"),
+    User(martricule: "10345678", password: "admin", pos: "chef"),
+    User(martricule: "10123456", password: "admin", pos: "chef"),
+    User(martricule: "10298765", password: "admin", pos: "chef"),
+    User(martricule: "10387654", password: "admin", pos: "chef"),
+    User(martricule: "10176543", password: "admin", pos: "chef"),
+    User(martricule: "10212345", password: "admin", pos: "chef"),
+    User(martricule: "10323456", password: "admin", pos: "chef"),
+    User(martricule: "10134567", password: "admin", pos: "chef"),
+    User(martricule: "10245678", password: "admin", pos: "chef")
   ];
 
   int indexUser(String matricule){
@@ -192,7 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           // Navigate to Home screen
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const Home()),
+                            MaterialPageRoute(builder: (context) => Home(pos: users[ind].pos)),
                           );
                         }
                       }

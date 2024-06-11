@@ -3,23 +3,9 @@ import 'package:projet_stage/followup.dart';
 import 'package:projet_stage/rapport.dart';
 import 'package:projet_stage/reclamation.dart';
 
-void main(){
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const Home(),
-    );
-  }
-}
-
 class Home extends StatefulWidget {
-  const Home({super.key});
+  final String pos;
+  const Home({super.key, required this.pos});
 
   @override
   State<Home> createState() => _HomeState();
@@ -43,6 +29,7 @@ class _HomeState extends State<Home> {
       body: Center(
         child: Column(
           children: [
+            Text('${widget.pos}'),
             const SizedBox(height: 50),
             ElevatedButton.icon(
               icon: Icon(Icons.account_balance, color: Colors.white, size: 32),
