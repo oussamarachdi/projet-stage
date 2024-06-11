@@ -61,16 +61,16 @@ class _MyHomePageState extends State<MyHomePage> {
   late String _password;
   final _formKey = GlobalKey<FormState>();
   final List<User> users = [
-    User(martricule: "10234567", password: "admin"),
-    User(martricule: "10345678", password: "admin"),
-    User(martricule: "10123456", password: "admin"),
-    User(martricule: "10298765", password: "admin"),
-    User(martricule: "10387654", password: "admin"),
-    User(martricule: "10176543", password: "admin"),
-    User(martricule: "10212345", password: "admin"),
-    User(martricule: "10323456", password: "admin"),
-    User(martricule: "10134567", password: "admin"),
-    User(martricule: "10245678", password: "admin")
+    User(martricule: "10234567", password: "admin",),
+    User(martricule: "10345678", password: "admin",),
+    User(martricule: "10123456", password: "admin",),
+    User(martricule: "10298765", password: "admin",),
+    User(martricule: "10387654", password: "admin",),
+    User(martricule: "10176543", password: "admin",),
+    User(martricule: "10212345", password: "admin",),
+    User(martricule: "10323456", password: "admin",),
+    User(martricule: "10134567", password: "admin",),
+    User(martricule: "10245678", password: "admin",)
   ];
 
   int indexUser(String matricule){

@@ -3,22 +3,10 @@ import 'package:projet_stage/followup.dart';
 import 'package:projet_stage/rapport.dart';
 import 'package:projet_stage/reclamation.dart';
 
-void main(){
-  runApp(const MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const Home(),
-    );
-  }
-}
 
 class Home extends StatefulWidget {
+
   const Home({super.key});
 
   @override
@@ -26,6 +14,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final String pos = "operateur";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,18 +35,18 @@ class _HomeState extends State<Home> {
           children: [
             const SizedBox(height: 50),
             ElevatedButton.icon(
-              icon: Icon(Icons.account_balance, color: Colors.white, size: 32),
-              label: Text(
+              icon: const Icon(Icons.account_balance, color: Colors.white, size: 32),
+              label: const Text(
                 "Suivi",
                 style: TextStyle(color: Colors.white, fontSize: 15),
               ),
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue[900],
-                minimumSize: Size(300, 40),
+                backgroundColor: Colors.blue[900],
+                minimumSize: const Size(300, 40),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                 ),
-                side: BorderSide(color: Colors.white, width: 1),
+                side: const BorderSide(color: Colors.white, width: 1),
               ),
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const followup()));
@@ -64,41 +54,44 @@ class _HomeState extends State<Home> {
             ),
             const SizedBox(height: 50),
             ElevatedButton.icon(
-              icon: Icon(Icons.accessibility, color: Colors.white, size: 32),
-              label: Text(
+              icon: const Icon(Icons.accessibility, color: Colors.white, size: 32),
+              label: const Text(
                 "Demande",
                 style: TextStyle(color: Colors.white, fontSize: 15),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue[900],
-                minimumSize: Size(300, 40),
+                minimumSize: const Size(300, 40),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                 ),
-                side: BorderSide(color: Colors.white, width: 1),
+                side: const BorderSide(color: Colors.white, width: 1),
               ),
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const reclamation()));
               },
             ),
             const SizedBox(height: 50),
-            ElevatedButton.icon(
-              icon: Icon(Icons.access_time_rounded, color: Colors.white, size: 32),
-              label: Text(
-                "Rapport",
-                style: TextStyle(color: Colors.white, fontSize: 15),
-              ),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.blue[900],
-                minimumSize: Size(300, 40),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
+            Visibility(
+              visible: pos != "operateur" ? true : false,
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.access_time_rounded, color: Colors.white, size: 32),
+                label: const Text(
+                  "Rapport",
+                  style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
-                side: BorderSide(color: Colors.white, width: 1),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue[900],
+                  minimumSize: const Size(300, 40),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  side: const BorderSide(color: Colors.white, width: 1),
+                ),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const rapport()));
+                },
               ),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const rapport()));
-              },
             ),
           ],
         ),
