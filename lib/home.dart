@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projet_stage/Test.dart';
 import 'package:projet_stage/followup.dart';
 import 'package:projet_stage/rapport.dart';
 import 'package:projet_stage/reclamation.dart';
@@ -54,6 +55,25 @@ class _HomeState extends State<Home> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const FollowUp()));
               },
             ),
+            // TEST
+            ElevatedButton.icon(
+              icon: const Icon(Icons.account_balance, color: Colors.white, size: 32),
+              label: const Text(
+                "Test",
+                style: TextStyle(color: Colors.white, fontSize: 15),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue[900],
+                minimumSize: const Size(300, 40),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                side: const BorderSide(color: Colors.white, width: 1),
+              ),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const test()));
+              },
+            ),
             const SizedBox(height: 50),
             ElevatedButton.icon(
               icon: const Icon(Icons.accessibility, color: Colors.white, size: 32),
@@ -70,7 +90,7 @@ class _HomeState extends State<Home> {
                 side: const BorderSide(color: Colors.white, width: 1),
               ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const reclamation()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const Reclamation()));
               },
             ),
             const SizedBox(height: 50),
