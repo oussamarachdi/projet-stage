@@ -10,169 +10,169 @@ class FollowUp extends StatelessWidget {
   Widget build(BuildContext context) {
     final now = DateTime.now();
     return FutureBuilder<User?>(
-      future: UserPreferences.loadUser(),
-      builder: (context, snapshot){
+        future: UserPreferences.loadUser(),
+        builder: (context, snapshot){
 
-        if(!snapshot.hasData || snapshot.data == null){
-          return Center(child: Text("No user Data",));
-        }
+          if(!snapshot.hasData || snapshot.data == null){
+            return Center(child: Text("No user Data",));
+          }
 
-        final user = snapshot.data!;
+          final user = snapshot.data!;
 
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            title: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Image.asset(
-                "assets/logo.jpeg",
-                width: 150,
-                height: 150,
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              title: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Image.asset(
+                  "assets/logo.jpeg",
+                  width: 150,
+                  height: 150,
+                ),
               ),
+              centerTitle: true,
             ),
-            centerTitle: true,
-          ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Personal Information Section
-                  Text(
-                    "Informations Personnelles",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Personal Information Section
+                    Text(
+                      "Informations Personnelles",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InfoRow(
-                            label: "Nom et Prénom: ",
-                            value: user.NP,
-                          ),
-                          InfoRow(
-                            label: "Matricule: ",
-                            value: user.matricule,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InfoRow(
-                            label: "Date: ",
-                            value: '${now.day}/${now.month}/${now.year}',
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const Divider(height: 40.0),
-
-                  // Professional Information Section
-                  const Text(
-                    "Informations Professionnelles",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  Divider(height: 20.0),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      InfoRow(
-                        label: "Fonction SAP: ",
-                        value: user.fctSAP,
-                      ),
-                      InfoRow(
-                        label: "Poste: ",
-                        value: user.pos,
-                      ),
-                      InfoRow(
-                        label: "Contre Maitre: ",
-                        value: user.contreMaitre,
-                      ),
-                    ],
-                  ),
-                  const Divider(height: 40.0),
-
-                  // Credit Information Section
-                  const Text(
-                    "Informations de Macro",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  Table(
-                      border: TableBorder.all(color: Colors.black),
-                      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TableRow(
-                            children: [
-                              TableCell(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("Type de Macro"),
-                                ),
-                              ),
-                              TableCell(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("Montant"),
-                                ),
-                              ),
-                            ]
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            InfoRow(
+                              label: "Nom et Prénom: ",
+                              value: user.NP,
+                            ),
+                            InfoRow(
+                              label: "Matricule: ",
+                              value: user.matricule,
+                            ),
+                          ],
                         ),
-                        TableRow(
-                            children: [
-                              TableCell(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("Graiet"),
-                                ),
-                              ),
-                              TableCell(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("0"),
-                                ),
-                              ),
-                            ]
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            InfoRow(
+                              label: "Date: ",
+                              value: '${now.day}/${now.month}/${now.year}',
+                            ),
+                          ],
                         ),
-                        TableRow(
-                            children: [
-                              TableCell(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("sulfat"),
-                                ),
-                              ),
-                              TableCell(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("0"),
-                                ),
-                              ),
-                            ]
-                        ),
-                      ]
-                  ),
+                      ],
+                    ),
+                    const Divider(height: 40.0),
 
-                ],
+                    // Professional Information Section
+                    const Text(
+                      "Informations Professionnelles",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    Divider(height: 20.0),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InfoRow(
+                          label: "Fonction SAP: ",
+                          value: user.fctSAP,
+                        ),
+                        InfoRow(
+                          label: "Poste: ",
+                          value: user.pos,
+                        ),
+                        InfoRow(
+                          label: "Contre Maitre: ",
+                          value: user.contreMaitre,
+                        ),
+                      ],
+                    ),
+                    const Divider(height: 40.0),
+
+                    // Credit Information Section
+                    const Text(
+                      "Informations de Macro",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    Table(
+                        border: TableBorder.all(color: Colors.black),
+                        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                        children: [
+                          TableRow(
+                              children: [
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text("Type de Macro"),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text("Montant"),
+                                  ),
+                                ),
+                              ]
+                          ),
+                          TableRow(
+                              children: [
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text("Graiet"),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text("0"),
+                                  ),
+                                ),
+                              ]
+                          ),
+                          TableRow(
+                              children: [
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text("sulfat"),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text("0"),
+                                  ),
+                                ),
+                              ]
+                          ),
+                        ]
+                    ),
+
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      }
+          );
+        }
     );
 
   }
@@ -223,5 +223,3 @@ class InfoRow extends StatelessWidget {
     );
   }
 }
-
-void main() => runApp(MaterialApp(home: FollowUp()));

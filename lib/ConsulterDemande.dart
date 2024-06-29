@@ -55,7 +55,11 @@ class _ConsulterdemandeState extends State<Consulterdemande> {
 
 
   Future<List<DemandeModel>> fetchDemandes(String matricule) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:3000/read?matricule=$matricule"));
+    final response = await http.get(Uri.parse("http://127.0.0.1:3000/read?matricule=$matricule"), headers: {
+    "Access-Control-Allow-Origin": "*",
+    'Content-Type': 'application/json',
+    'Accept': '*/*'
+    });
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = jsonDecode(response.body);
       List<DemandeModel> demandes = jsonResponse.map((json) => DemandeModel.fromJson(json)).toList();
@@ -98,3 +102,4 @@ class _ConsulterdemandeState extends State<Consulterdemande> {
     );
   }
 }
+
