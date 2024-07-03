@@ -55,7 +55,7 @@ class _ConsulterdemandeState extends State<Consulterdemande> {
 
 
   Future<List<DemandeModel>> fetchDemandes(String matricule) async {
-    final response = await http.get(Uri.parse("http://127.0.0.1:3000/read?matricule=$matricule"), headers: {
+    final response = await http.get(Uri.parse("http://10.0.2.2:3000/read?matricule=$matricule"), headers: {
     "Access-Control-Allow-Origin": "*",
     'Content-Type': 'application/json',
     'Accept': '*/*'
@@ -85,10 +85,17 @@ class _ConsulterdemandeState extends State<Consulterdemande> {
               return ListView.builder(
                 itemCount: demandes.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(demandes[index].name),
-                    subtitle: Text(demandes[index].typeOfDemande),
-                    trailing: Text(demandes[index].etat),
+                  return Container(
+                    color: demandes[index].etat == 'En cours'
+                        ? Colors.yellow
+                        : demandes[index].etat == 'Validé'
+                        ? Colors.green
+                        : Colors.red,
+                    child: ListTile(
+                      title: Text(demandes[index].typeOfDemande, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),),
+                      subtitle: Text(demandes[index].name),
+                      trailing: Text(demandes[index].etat),
+                    ),
                   );
                 },
               );

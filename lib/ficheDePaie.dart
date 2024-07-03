@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:projet_stage/user.dart';
+import 'package:projet_stage/user_preferences.dart';
 
 class PageDemandeFichePaie extends StatefulWidget {
   @override
@@ -7,87 +11,89 @@ class PageDemandeFichePaie extends StatefulWidget {
 
 class _PageDemandeFichePaieState extends State<PageDemandeFichePaie> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _nom = '';
-  String _prenom = '';
-  String _matricule = '';
+  String name = '';
+  String matricule = '';
   String _mois = '';
+
+  bool success=false;
+  bool submitted=false;
+
+  Future<void> makePostRequest(String name, String matricule, String typeOfDemande, String mois) async {
+    final url = Uri.parse("http://10.0.2.2:3000/write"); // Replace with your API URL
+    final headers = {"Content-Type": 'application/json'};
+    final body = json.encode({
+      'name': name,
+      'matricule': matricule,
+      'typeOfDemande': typeOfDemande,
+      'mois': mois
+    });
+
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+      setState(() {
+        success = response.statusCode == 200;
+        submitted = true;
+      });
+    } catch (e) {
+      setState(() {
+        success = false;
+        submitted = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Demande de Fiche de Paie'),
-      ),
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView(
-            children: <Widget>[
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Nom'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer votre nom';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _nom = value ?? '';
-                },
+    return FutureBuilder<User?>(
+        future: UserPreferences.loadUser()
+        ,
+        builder: (context, snapshot){
+          if(!snapshot.hasData || snapshot.data == null){
+            return Center(child: Text("No user Data",));
+          }
+
+          final user = snapshot.data!;
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Demande de Fiche de Paie'),
+            ),
+            body: Form(
+              key: _formKey,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ListView(
+                  children: <Widget>[
+                    TextFormField(
+                      decoration: const InputDecoration(labelText: 'Mois'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Veuillez entrer le mois';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _mois = value ?? '';
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          _formKey.currentState?.save();
+                          // Envoyer les données à votre backend ou traiter les données ici
+                          await makePostRequest(user.NP, user.matricule, "fichedePaie", _mois);
+                        }
+                      },
+                      child: const Text('Soumettre'),
+                    ),
+                  ],
+                ),
               ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Prénom'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer votre prénom';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _prenom = value ?? '';
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Matricule'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer votre matricule';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _matricule = value ?? '';
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Mois'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer le mois';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _mois = value ?? '';
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    _formKey.currentState?.save();
-                    // Envoyer les données à votre backend ou traiter les données ici
-                    print('Nom: $_nom, Prénom: $_prenom, Matricule: $_matricule, Mois: $_mois');
-                  }
-                },
-                child: const Text('Soumettre'),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        }
     );
+
   }
 }
 

@@ -1,6 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projet_stage/DemandeAvance.dart';
+import 'package:projet_stage/DemandeConge.dart';
 import 'package:projet_stage/DemandeCredit.dart';
+import 'package:projet_stage/ficheDePaie.dart';
+
+import 'DemandeModification.dart';
+import 'DemandeTenu.dart';
+import 'DemandeTransport.dart';
 class Demande extends StatelessWidget {
   const Demande ({super.key});
 
@@ -50,7 +56,7 @@ class Demande extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => DemandeCredit()),
+                          MaterialPageRoute(builder: (context) => DemandeConge()),
                         );
                       },
                     ),
@@ -73,6 +79,10 @@ class Demande extends StatelessWidget {
                         ],
                       ),
                       onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => PageDemandeFichePaie()),
+                        );
                       },
                     ),
                   ),
@@ -89,7 +99,6 @@ class Demande extends StatelessWidget {
                       ],
                     ),
                     onPressed: () {
-
                     },
 
                   ),
@@ -115,7 +124,12 @@ class Demande extends StatelessWidget {
                         Image.asset('assets/credit.png', width:250, height: 250,),
                       ],
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DemandeAvance()),
+                      );
+                    },
                   ),
                   ),
                   Expanded (child:
@@ -130,7 +144,12 @@ class Demande extends StatelessWidget {
                         Image.asset('assets/modification.png', width: 250, height:250,),
                       ],
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DemandeModificationForm()),
+                      );
+                    },
                   ),
                   ),
                   Expanded(child:
@@ -147,7 +166,12 @@ class Demande extends StatelessWidget {
 
                       ],
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DemandeTenuForm()),
+                      );
+                    },
                   ),
                   ),
 
@@ -172,7 +196,12 @@ class Demande extends StatelessWidget {
                           ),
                         ],
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DemandeTransport()),
+                        );
+                      },
                     ),
                   ),
                   Expanded(
@@ -214,7 +243,8 @@ class Demande extends StatelessWidget {
                           ),
                         ],
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                      },
                     ),
                   ),
                 ],
