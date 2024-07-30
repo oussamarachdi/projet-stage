@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
         title: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Image.asset(
-            "assets/logo.jpeg",
+            "assets/logo.png",
             width: 150,
             height: 150,
           ),
@@ -40,7 +40,7 @@ class _HomeState extends State<Home> {
             ElevatedButton.icon(
               icon: const Icon(Icons.account_balance, color: Colors.white, size: 32),
               label: const Text(
-                "Suivi",
+                "Profile",
                 style: TextStyle(color: Colors.white, fontSize: 15),
               ),
               style: ElevatedButton.styleFrom(

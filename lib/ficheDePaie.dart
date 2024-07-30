@@ -19,7 +19,7 @@ class _PageDemandeFichePaieState extends State<PageDemandeFichePaie> {
   bool submitted=false;
 
   Future<void> makePostRequest(String name, String matricule, String typeOfDemande, String mois) async {
-    final url = Uri.parse("http://10.0.2.2:3000/write"); // Replace with your API URL
+    final url = Uri.parse("http://127.0.0.1:3000/write"); // Replace with your API URL
     final headers = {"Content-Type": 'application/json'};
     final body = json.encode({
       'name': name,

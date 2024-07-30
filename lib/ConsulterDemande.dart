@@ -38,31 +38,37 @@ class Consulterdemande extends StatefulWidget {
 class _ConsulterdemandeState extends State<Consulterdemande> {
   late Future<List<DemandeModel>> futureDemandes;
   User? user;
+
   @override
   void initState() {
     super.initState();
-    loadUserData();
+    loadUser();
   }
-  Future<void> loadUserData() async{
-    User? loadUserData = await UserPreferences.loadUser();
-    if(loadUserData != null){
+
+  Future<void> loadUser() async {
+    User? loadedUser = await UserPreferences.loadUser();
+    if (loadedUser != null) {
       setState(() {
-        user = loadUserData;
+        user = loadedUser;
         futureDemandes = fetchDemandes(user!.matricule);
       });
     }
   }
 
-
   Future<List<DemandeModel>> fetchDemandes(String matricule) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:3000/read?matricule=$matricule"), headers: {
-    "Access-Control-Allow-Origin": "*",
-    'Content-Type': 'application/json',
-    'Accept': '*/*'
-    });
+    final response = await http.get(
+      Uri.parse("http://127.0.0.1:3000/read?matricule=$matricule"),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json',
+        'Accept': '*/*'
+      },
+    );
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = jsonDecode(response.body);
-      List<DemandeModel> demandes = jsonResponse.map((json) => DemandeModel.fromJson(json)).toList();
+      List<DemandeModel> demandes = jsonResponse
+          .map((json) => DemandeModel.fromJson(json))
+          .toList();
       return demandes;
     } else {
       throw Exception("Failed to load demandes");
@@ -81,32 +87,68 @@ class _ConsulterdemandeState extends State<Consulterdemande> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<DemandeModel> demandes = snapshot.data!;
-              print(demandes);
               return ListView.builder(
                 itemCount: demandes.length,
                 itemBuilder: (context, index) {
-                  return Container(
+                  return Card(
                     color: demandes[index].etat == 'En cours'
-                        ? Colors.yellow
+                        ? Colors.yellow[100]
                         : demandes[index].etat == 'Validé'
-                        ? Colors.green
-                        : Colors.red,
+                        ? Colors.green[100]
+                        : Colors.red[100],
+                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: ListTile(
-                      title: Text(demandes[index].typeOfDemande, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),),
-                      subtitle: Text(demandes[index].name),
-                      trailing: Text(demandes[index].etat),
+                      title: Text(
+                        demandes[index].typeOfDemande,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                      subtitle: Text(
+                        demandes[index].name,
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      trailing: Chip(
+                        label: Text(demandes[index].etat),
+                        backgroundColor: demandes[index].etat == 'En cours'
+                            ? Colors.yellow
+                            : demandes[index].etat == 'Validé'
+                            ? Colors.green
+                            : Colors.red,
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                   );
                 },
               );
             } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.error, color: Colors.red, size: 48),
+                    SizedBox(height: 16),
+                    Text(
+                      "Une erreur est survenue: ${snapshot.error}",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              );
             }
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           },
         ),
       ),
     );
   }
 }
-

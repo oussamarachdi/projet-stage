@@ -1,137 +1,150 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:projet_stage/user.dart';
+import 'package:projet_stage/user_preferences.dart';
 
-class DemandeAvance extends StatefulWidget {
+class DemandeAvanceForm extends StatefulWidget {
   @override
-  _DemandeAvanceState createState() => _DemandeAvanceState();
+  _DemandeAvanceFormState createState() => _DemandeAvanceFormState();
 }
 
-class _DemandeAvanceState extends State<DemandeAvance> {
-  final _transportFormKey = GlobalKey<FormState>();
-  final _myFormKey = GlobalKey<FormState>();
-  String gouvernorat = '';
-  String ville = '';
-  String nombre_de_passagers_familiaux = '';
-  String nom_de_partenaire = '';
-  List<TextEditingController> controllers = [
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-  ];
+class _DemandeAvanceFormState extends State<DemandeAvanceForm> {
+  final _formKey = GlobalKey<FormState>();
+  String montant = '';
+  String type = '';
+  bool success = false;
+  bool submitted = false;
+
+  Future<void> makePostRequest(String name, String matricule, String typeOfDemande, String montant, String type) async {
+    final url = Uri.parse("http://127.0.0.1:3000/write"); // Replace with your API URL
+    final headers = {"Content-Type": 'application/json'};
+    final body = json.encode({
+      'name': name,
+      'matricule': matricule,
+      'typeOfDemande': typeOfDemande,
+      'montant': montant,
+      'typeAvance': type,
+    });
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+      setState(() {
+        success = response.statusCode == 200;
+        submitted = true;
+      });
+    } catch (e) {
+      setState(() {
+        success = false;
+        submitted = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Combined Form'),
-      ),
-      body: ListView(
-        padding: EdgeInsets.all(16.0),
-        children: <Widget>[
-          Form(
-            key: _transportFormKey,
-            child: Column(
-              children: [
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'gouvernorat-ولاية'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez entrer votre gouvernorat';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    gouvernorat = value ?? '';
-                  },
-                ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'ville-مدينة'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez entrer votre ville';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    ville = value ?? '';
-                  },
-                ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'nombre_de_passagers_familiaux-عدد الركاب من العائلة'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez entrer votre nombre_de_passagers_familiaux';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    nombre_de_passagers_familiaux = value ?? '';
-                  },
-                ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'nom_de_partenaire-اسم شريك'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez entrer votre nom_de_partenaire';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    nom_de_partenaire = value ?? '';
-                  },
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_transportFormKey.currentState?.validate() ?? false) {
-                      _transportFormKey.currentState?.save();
-                      print(
-                        '$gouvernorat, gouvernorat: $ville, ville: $nombre_de_passagers_familiaux, nombre_de_passagers_familiaux: $nom_de_partenaire, nom_de_partenaire',
-                      );
-                    }
-                  },
-                  child: Text('Soumettre Transport'),
-                ),
-              ],
-            ),
+    return FutureBuilder<User?>(
+      future: UserPreferences.loadUser(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || snapshot.data == null) {
+          return Center(child: Text('No user data available', style: TextStyle(fontSize: 18, color: Colors.red)));
+        }
+        final user = snapshot.data!;
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Demande Avance'),
           ),
-          Form(
-            key: _myFormKey,
-
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                for (int i = 0; i < 4; i++)
-                  TextFormField(
-                    controller: controllers[i],
-
-                    decoration: InputDecoration(
-
-                      labelText : 'l'' enfant-الطفل  :',
-                      hintText: 'prénom et âge -  الاسم والعمر',
+                Expanded(
+                  child: Form(
+                    key: _formKey,
+                    child: ListView(
+                      children: <Widget>[
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Montant (مبلغ)',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.number,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Veuillez entrer le montant';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            montant = value ?? '';
+                          },
+                        ),
+                        SizedBox(height: 16),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Type (نوع)',
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Veuillez entrer le type';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            type = value ?? '';
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () async {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              _formKey.currentState?.save();
+                              await makePostRequest(user.NP, user.matricule, 'avance', montant, type);
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text(success ? 'Succès' : 'Échec'),
+                                    content: Text(success
+                                        ? 'Votre demande a été soumise avec succès.'
+                                        : 'Une erreur est survenue lors de la soumission de votre demande.'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          if (success) {
+                                            Navigator.of(context).pop();
+                                          }
+                                        },
+                                        child: Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          },
+                          child: Text('Soumettre'),
+                        ),
+                        if (submitted && !success)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 16.0),
+                            child: Text(
+                              'Erreur lors de l\'envoi de la demande. Veuillez réessayer.',
+                              style: TextStyle(color: Colors.red, fontSize: 16),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                      ],
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'من فضلك أدخل قيمة';
-                      }
-                      return null;
-                    },
                   ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_myFormKey.currentState!.validate()) {
-                      print(controllers[0].text);
-                      print(controllers[1].text);
-                      print(controllers[2].text);
-                      print(controllers[3].text);
-                    };
-                  },
-                  child: Text('Submit'),
                 ),
               ],
             ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

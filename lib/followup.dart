@@ -25,7 +25,7 @@ class FollowUp extends StatelessWidget {
               title: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Image.asset(
-                  "assets/logo.jpeg",
+                  "assets/logo.png",
                   width: 150,
                   height: 150,
                 ),

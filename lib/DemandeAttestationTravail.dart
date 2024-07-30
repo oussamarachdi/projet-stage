@@ -1,31 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:projet_stage/user.dart';
 import 'package:projet_stage/user_preferences.dart';
 
-class DemandeModificationForm extends StatefulWidget {
+class DemandeAttestationTravailForm extends StatefulWidget {
   @override
-  _DemandeModificationFormState createState() => _DemandeModificationFormState();
+  _DemandeAttestationTravailFormState createState() => _DemandeAttestationTravailFormState();
 }
 
-class _DemandeModificationFormState extends State<DemandeModificationForm> {
+class _DemandeAttestationTravailFormState extends State<DemandeAttestationTravailForm> {
   final _formKey = GlobalKey<FormState>();
-  String nouvelleAdresseEmail = '';
   bool success = false;
   bool submitted = false;
 
-  Future<void> makePostRequest(String name, String matricule, String typeOfDemande, String nouvelleAdresseEmail) async {
+  Future<void> makePostRequest(String name, String matricule, String typeOfDemande) async {
     final url = Uri.parse("http://127.0.0.1:3000/write"); // Replace with your API URL
     final headers = {"Content-Type": 'application/json'};
     final body = json.encode({
       'name': name,
       'matricule': matricule,
       'typeOfDemande': typeOfDemande,
-      'nouvelle_addresse_mail': nouvelleAdresseEmail,
     });
-
     try {
       final response = await http.post(url, headers: headers, body: body);
       setState(() {
@@ -48,7 +44,7 @@ class _DemandeModificationFormState extends State<DemandeModificationForm> {
         if (!snapshot.hasData || snapshot.data == null) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Demande de Modification'),
+              title: Text('Demande Attestation Travail'),
             ),
             body: Center(
               child: Text(
@@ -63,7 +59,7 @@ class _DemandeModificationFormState extends State<DemandeModificationForm> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text('Demande de Modification'),
+            title: Text('Demande Attestation Travail'),
           ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -72,44 +68,35 @@ class _DemandeModificationFormState extends State<DemandeModificationForm> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Nouvelle adresse e-mail',
-                      hintText: 'Entrez votre nouvelle adresse e-mail',
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Veuillez entrer votre nouvelle adresse e-mail';
-                      }
-                      // Optionally, you could validate email format
-                      if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                        return 'Veuillez entrer une adresse e-mail valide';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      nouvelleAdresseEmail = value ?? '';
-                    },
+                  Text(
+                    'Demande d\'attestation de travail',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Cliquez sur "Soumettre" pour envoyer votre demande d\'attestation de travail.',
+                    style: TextStyle(fontSize: 16),
+                    textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor : Colors.blue,
                       padding: EdgeInsets.symmetric(vertical: 16.0),
                     ),
                     onPressed: () async {
                       if (_formKey.currentState?.validate() ?? false) {
                         _formKey.currentState?.save();
-                        await makePostRequest(user.NP, user.matricule, 'modification', nouvelleAdresseEmail);
+                        await makePostRequest(user.NP, user.matricule, 'AttTravail');
                         showDialog(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
                               title: Text(success ? 'Succès' : 'Échec'),
                               content: Text(success
-                                  ? 'Votre demande de modification a été envoyée avec succès.'
-                                  : 'Échec de l\'envoi de votre demande. Veuillez réessayer.'),
+                                  ? 'Votre demande d\'attestation de travail a été soumise avec succès.'
+                                  : 'Une erreur est survenue lors de la soumission de votre demande.'),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () {
@@ -126,10 +113,7 @@ class _DemandeModificationFormState extends State<DemandeModificationForm> {
                         );
                       }
                     },
-                    child: Text(
-                      'Soumettre',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
+                    child: Text('Soumettre', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                   ),
                   if (submitted && !success)
                     Padding(

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:projet_stage/DemandeAttSalaire.dart';
+import 'package:projet_stage/DemandeAttestationTravail.dart';
 import 'package:projet_stage/DemandeAvance.dart';
 import 'package:projet_stage/DemandeConge.dart';
-import 'package:projet_stage/DemandeCredit.dart';
+import 'package:projet_stage/Reclamation.dart';
 import 'package:projet_stage/ficheDePaie.dart';
 
 import 'DemandeModification.dart';
@@ -18,7 +20,7 @@ class Demande extends StatelessWidget {
         title: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Image.asset(
-            "assets/logo.jpeg",
+            "assets/logo.png",
             width: 150,
             height: 150,
           ),
@@ -99,6 +101,7 @@ class Demande extends StatelessWidget {
                       ],
                     ),
                     onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DemandeAttestationTravailForm()));
                     },
 
                   ),
@@ -127,7 +130,7 @@ class Demande extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => DemandeAvance()),
+                        MaterialPageRoute(builder: (context) => DemandeAvanceForm()),
                       );
                     },
                   ),
@@ -199,7 +202,7 @@ class Demande extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => DemandeTransport()),
+                          MaterialPageRoute(builder: (context) => DemandetransportForm()),
                         );
                       },
                     ),
@@ -222,7 +225,12 @@ class Demande extends StatelessWidget {
                           ),
                         ],
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DemandeAttestationSalaireForm())
+                        );
+                      },
                     ),
                   ),
                   Expanded(
@@ -244,6 +252,7 @@ class Demande extends StatelessWidget {
                         ],
                       ),
                       onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Reclamation()));
                       },
                     ),
                   ),
