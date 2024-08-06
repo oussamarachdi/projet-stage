@@ -25,7 +25,7 @@ class _ReclamationState extends State<Reclamation> {
   bool success = false;
   bool submitted = false;
   Future<void> makePostRequest(String name, String matricule, String typeOfDemande, String typeDeProbleme, String reclamationText) async {
-    final url = Uri.parse("http://127.0.0.1:3000/write"); // Replace with your API URL
+    final url = Uri.parse("http://192.168.1.20:3000/write"); // Replace with your API URL
     final headers = {"Content-Type": 'application/json'};
     final body = json.encode({
       'name': name,
@@ -95,6 +95,28 @@ class _ReclamationState extends State<Reclamation> {
                   child: ElevatedButton(
                     onPressed: () async{
                       await makePostRequest(user.NP, user.matricule, 'Reclamation', selectedRadioValue, textReclmation);
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text(success ? 'Succès' : 'Échec'),
+                            content: Text(success
+                                ? 'Votre demande de congé a été envoyée avec succès.'
+                                : 'Échec de l\'envoi de votre demande. Veuillez réessayer.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  if (success) {
+                                    Navigator.of(context).pop();
+                                  }
+                                },
+                                child: Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                     child: Text("Envoyer Reclamation"),
                   ),

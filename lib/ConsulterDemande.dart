@@ -57,7 +57,7 @@ class _ConsulterdemandeState extends State<Consulterdemande> {
 
   Future<List<DemandeModel>> fetchDemandes(String matricule) async {
     final response = await http.get(
-      Uri.parse("http://127.0.0.1:3000/read?matricule=$matricule"),
+      Uri.parse("http://192.168.1.20:3000/read?matricule=$matricule"),
       headers: {
         "Access-Control-Allow-Origin": "*",
         'Content-Type': 'application/json',

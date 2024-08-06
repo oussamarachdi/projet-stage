@@ -36,7 +36,7 @@ class _DemandeCongeState extends State<DemandeConge> {
   }
 
   Future<void> makePostRequest(String name, String matricule, String typeOfDemande, int? numberOfDays, String reason, DateTime? startDate) async {
-    final url = Uri.parse("http://127.0.0.1:3000/write"); // Replace with your machine's IP address
+    final url = Uri.parse("http://192.168.1.20:3000/write"); // Replace with your machine's IP address
     final headers = {"Content-Type": "application/json"};
     final body = json.encode({
       "name": name,

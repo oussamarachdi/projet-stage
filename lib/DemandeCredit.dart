@@ -23,7 +23,7 @@ class _DemandeCreditState extends State<DemandeCredit> {
 
 
   Future<void> makePostRequest(String name, String matricule, String typeOfDemande) async {
-    final url = Uri.parse("http://127.0.0.1:3000/write"); // Replace with your API URL
+    final url = Uri.parse("http://192.168.1.20:3000/write"); // Replace with your API URL
     final headers = {"Content-Type": 'application/json'};
     final body = json.encode({
       'name': name,
@@ -86,6 +86,28 @@ class _DemandeCreditState extends State<DemandeCredit> {
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               await makePostRequest(user.NP, user.matricule, "Conjé");
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text(success ? 'Succès' : 'Échec'),
+                                    content: Text(success
+                                        ? 'Votre demande de congé a été envoyée avec succès.'
+                                        : 'Échec de l\'envoi de votre demande. Veuillez réessayer.'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          if (success) {
+                                            Navigator.of(context).pop();
+                                          }
+                                        },
+                                        child: Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
                             }
                           },
 

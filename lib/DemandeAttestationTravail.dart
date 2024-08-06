@@ -15,7 +15,7 @@ class _DemandeAttestationTravailFormState extends State<DemandeAttestationTravai
   bool submitted = false;
 
   Future<void> makePostRequest(String name, String matricule, String typeOfDemande) async {
-    final url = Uri.parse("http://127.0.0.1:3000/write"); // Replace with your API URL
+    final url = Uri.parse("http://192.168.1.20:3000/write"); // Replace with your API URL
     final headers = {"Content-Type": 'application/json'};
     final body = json.encode({
       'name': name,

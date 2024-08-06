@@ -18,7 +18,7 @@ class _DemandeTenuFormState extends State<DemandeTenuForm> {
   String _submissionMessage = '';
 
   Future<void> makePostRequest(String name, String matricule, String typeOfDemande, String taille) async {
-    final url = Uri.parse("http://127.0.0.1:3000/write"); // Replace with your API URL
+    final url = Uri.parse("http://192.168.1.20:3000/write"); // Replace with your API URL
     final headers = {"Content-Type": 'application/json'};
     final body = json.encode({
       'name': name,
@@ -103,6 +103,28 @@ class _DemandeTenuFormState extends State<DemandeTenuForm> {
                       if (_formKey.currentState?.validate() ?? false) {
                         _formKey.currentState?.save();
                         await makePostRequest(user.NP, user.matricule, 'tenu', taille);
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text(_submissionSuccess ? 'Succès' : 'Échec'),
+                              content: Text(_submissionSuccess
+                                  ? 'Votre demande de congé a été envoyée avec succès.'
+                                  : 'Échec de l\'envoi de votre demande. Veuillez réessayer.'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    if (_submissionSuccess) {
+                                      Navigator.of(context).pop();
+                                    }
+                                  },
+                                  child: Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       }
                     },
                     child: Text('Soumettre', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
